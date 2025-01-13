@@ -1,0 +1,26 @@
+{
+  "title": "Contact Form",
+  "fields": [
+    {
+      "name": "fullName",
+      "type": "text",
+      "label": "Full Name",
+      "placeholder": "Enter your full name",
+      "required": true
+    },
+    {
+      "name": "email",
+      "type": "email",
+      "label": "Email Address",
+      "placeholder": "Enter your email",
+      "required": true
+    },
+    {
+      "name": "message",
+      "type": "textarea",
+      "label": "Message",
+      "placeholder": "Type your message",
+      "required": true
+    }
+  ]
+}

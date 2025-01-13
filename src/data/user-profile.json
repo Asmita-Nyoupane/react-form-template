@@ -1,0 +1,87 @@
+{
+  "title": "User Profile Form",
+  "fields": [
+    {
+      "name": "username",
+      "type": "text",
+      "label": "Username",
+      "placeholder": "Enter your username",
+      "required": true
+    },
+    {
+      "name": "email",
+      "type": "email",
+      "label": "Email Address",
+      "placeholder": "Enter your email",
+      "required": true
+    },
+    {
+      "name": "phone",
+      "type": "text",
+      "label": "Phone Number",
+      "placeholder": "Enter your phone number",
+      "required": false
+    },
+    {
+      "name": "profilePicture",
+      "type": "file",
+      "label": "Profile Picture",
+      "placeholder": "",
+      "required": false
+    },
+    {
+      "name": "dob",
+      "type": "date",
+      "label": "Date of Birth",
+      "placeholder": "",
+      "required": false
+    },
+    {
+      "name": "password",
+      "type": "password",
+      "label": "Password",
+      "placeholder": "Enter your password",
+      "required": true
+    },
+    {
+      "name": "gender",
+      "type": "radio",
+      "label": "Gender",
+      "placeholder": "",
+      "required": false,
+      "options": [
+        { "value": "male", "label": "Male" },
+        { "value": "female", "label": "Female" },
+        { "value": "other", "label": "Other" }
+      ]
+    },
+    {
+      "name": "location",
+      "type": "text",
+      "label": "Location",
+      "placeholder": "Enter your city or address",
+      "required": false
+    },
+    {
+      "name": "skills",
+      "type": "select",
+      "label": "Skills",
+      "placeholder": "Select your skills",
+      "required": false,
+      "options": [
+        { "value": "javascript", "label": "JavaScript" },
+        { "value": "react", "label": "React" },
+        { "value": "node", "label": "Node.js" },
+        { "value": "design", "label": "UI/UX Design" }
+      ],
+      "multiple": true
+    },
+    {
+      "name": "bio",
+      "type": "textarea",
+      "label": "Bio",
+      "placeholder": "Write a short bio",
+      "required": false
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "title": "Job Application Form",
+  "fields": [
+    {
+      "name": "fullName",
+      "type": "text",
+      "label": "Full Name",
+      "placeholder": "Enter your full name",
+      "required": true
+    },
+    {
+      "name": "email",
+      "type": "email",
+      "label": "Email Address",
+      "placeholder": "Enter your email",
+      "required": true
+    },
+    {
+      "name": "phone",
+      "type": "text",
+      "label": "Phone Number",
+      "placeholder": "Enter your phone number",
+      "required": true
+    },
+    {
+      "name": "resume",
+      "type": "file",
+      "label": "Upload Resume",
+      "placeholder": "",
+      "required": true
+    },
+    {
+      "name": "position",
+      "type": "select",
+      "label": "Position Applied For",
+      "placeholder": "Select a position",
+      "required": true,
+      "options": [
+        { "value": "frontend", "label": "Frontend Developer" },
+        { "value": "backend", "label": "Backend Developer" },
+        { "value": "fullstack", "label": "Full Stack Developer" },
+        { "value": "designer", "label": "UI/UX Designer" }
+      ]
+    },
+    {
+      "name": "availability",
+      "type": "date",
+      "label": "Available Start Date",
+      "placeholder": "",
+      "required": true
+    },
+    {
+      "name": "portfolio",
+      "type": "text",
+      "label": "Portfolio/Website (Optional)",
+      "placeholder": "Enter your portfolio or website link",
+      "required": false
+    },
+    {
+      "name": "relocation",
+      "type": "radio",
+      "label": "Are you willing to relocate?",
+      "placeholder": "",
+      "required": true,
+      "options": [
+        { "value": "yes", "label": "Yes" },
+        { "value": "no", "label": "No" }
+      ]
+    },
+    {
+      "name": "coverLetter",
+      "type": "textarea",
+      "label": "Cover Letter",
+      "placeholder": "Write a brief cover letter",
+      "required": false
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.label {
+  @apply text-base md:text-lg font-semibold text-start;
+}
+.field {
+  @apply border p-2 rounded  shadow focus:outline-none;
+}

@@ -2,8 +2,8 @@ import { TFields } from "../types/global-types";
 
 type TProps = {
     data: TFields,
-    formVal: { [key: string]: string[] },
-    setFormVal: (val: { [key: string]: string[] }) => void
+    formVal: string[],
+    setFormVal: (str: string[]) => void
     className?: string,
     error?: string,
     setError: (error: string) => void
@@ -11,17 +11,16 @@ type TProps = {
 
 const Checkbox = ({ data, formVal, setFormVal, error, setError }: TProps) => {
 
-    const selectedValues: string[] = formVal[data.name] || [];
+    // check if formVal is an array to assign it on selectedValues
+    const selectedValues: string[] = Array.isArray(formVal) ? formVal : [];
+
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = e.target;
         const newValues = selectedValues.includes(value)
             ? selectedValues.filter((val) => val !== value)
             : [...selectedValues, value];
-        setFormVal({
-            ...formVal,
-            [data.name]: newValues,
-        });
+        setFormVal(newValues);
         setError("");
     };
 

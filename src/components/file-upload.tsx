@@ -3,8 +3,8 @@ import { TFields } from "../types/global-types"
 
 type TProps = {
     data: TFields,
-    formVal: Record<string, File | null>,
-    setFormVal: React.Dispatch<React.SetStateAction<Record<string, File | null>>>,
+    formVal: File | null,
+    setFormVal: (file: File) => void
     error?: string,
     setError: (error: string) => void
 }
@@ -21,9 +21,7 @@ const File = ({ data, formVal, setFormVal, error, setError }: TProps) => {
             return;
         }
         setError("");
-        setFormVal({
-            ...formVal, [data.name]: file
-        });
+        { file && setFormVal(file); }
     };
 
     return (
@@ -44,8 +42,8 @@ const File = ({ data, formVal, setFormVal, error, setError }: TProps) => {
                 </button>
 
             </>
-            {formVal && formVal[data.name] && (
-                <p className="text-sm mt-2 text-start text-green-500 font-semibold">Selected File: {formVal[data.name]?.name}</p>
+            {formVal?.name && (
+                <p className="text-sm mt-2 text-start text-green-500 font-semibold">Selected File: {formVal?.name}</p>
             )}
             {error && <p className="text-sm text-start text-red-500 font-semibold">{error}</p>}
         </div>

@@ -6,10 +6,7 @@ const Radio = ({ data, formVal, setFormVal, error, setError }: TProps) => {
 
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setFormVal({
-            ...formVal,
-            [data.name]: e.target.value,
-        });
+        setFormVal(e.target.value);
         setError("");
     };
     return (
@@ -31,7 +28,7 @@ const Radio = ({ data, formVal, setFormVal, error, setError }: TProps) => {
                                 id={option.value}
                                 name={data.name}
                                 value={option.value}
-                                checked={formVal[data.name] === option.value}
+                                checked={formVal === option.value}
                                 onChange={handleChange}
                                 onBlur={() => handleBlur(formVal, setError, data)}
                             />

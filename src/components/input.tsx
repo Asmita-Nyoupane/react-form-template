@@ -3,8 +3,8 @@ import { TFields } from "../types/global-types"
 
 export type TProps = {
     data: TFields,
-    formVal: { [key: string]: string },
-    setFormVal: (val: { [key: string]: string }) => void
+    formVal: string | string[],
+    setFormVal: (str: string) => void
     className?: string,
     error?: string,
     setError: (error: string) => void
@@ -15,9 +15,7 @@ export type TProps = {
 const Input = ({ data, formVal, setFormVal, error, setError }: TProps) => {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 
-        setFormVal({
-            ...formVal, [data.name]: e.target.value
-        });
+        setFormVal(e.target.value);
         setError("")
     }
 
@@ -26,7 +24,7 @@ const Input = ({ data, formVal, setFormVal, error, setError }: TProps) => {
         <div className=' flex flex-col gap-2 flex-start'>
             <label className='label'>{data.label}  <span className="text-red-500 ml-2">{data.validation?.required && "* "}
             </span></label>
-            <input type={data.type} placeholder={data.placeholder} required={data.validation?.required} value={formVal[data.name] || ''} onChange={handleChange} className="field " onBlur={() => handleBlur(formVal, setError, data)} />
+            <input type={data.type} placeholder={data.placeholder} required={data.validation?.required} value={formVal || ''} onChange={handleChange} className="field " onBlur={() => handleBlur(formVal, setError, data)} />
             {error && <p className="text-sm text-start text-red-500 font-semibold">{error}</p>}
         </div>
     )
@@ -35,8 +33,8 @@ const Input = ({ data, formVal, setFormVal, error, setError }: TProps) => {
 export default Input
 
 // Handle blur event for validation
-export const handleBlur = (formVal: { [key: string]: string | string[] }, setError: (error: string) => void, data: TFields) => {
-    const value = Array.isArray(formVal[data.name]) ? formVal[data.name][0] : formVal[data.name] || "";
+export const handleBlur = (value: string | string[], setError: (error: string) => void, data: TFields) => {
+    // const value = Array.isArray(formVal[data.name]) ? formVal[data.name][0] : formVal[data.name] || "";
 
 
     if (data.validation?.required && !value) {

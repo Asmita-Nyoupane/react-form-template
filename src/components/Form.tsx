@@ -21,6 +21,14 @@ const Form = ({ Schema, initialData }: TProps) => {
     // State for errors
     const [errors, setErrors] = useState<Record<string, string>>({});
 
+    // setter function
+    const updateFormValue = (name: string, value: string | string[] | File) => {
+        setFormVal((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+    };
+
     //   handle form submission
     const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -53,8 +61,8 @@ const Form = ({ Schema, initialData }: TProps) => {
                                 <Input
                                     key={i}
                                     data={field}
-                                    formVal={formVal}
-                                    setFormVal={setFormVal}
+                                    formVal={formVal[field.name]}
+                                    setFormVal={(value: string) => updateFormValue(field.name, value)}
                                     error={errors[field.name]}
                                     setError={(error: string) => setErrors(prev => ({ ...prev, [field.name]: error }))}
                                 />
@@ -64,8 +72,8 @@ const Form = ({ Schema, initialData }: TProps) => {
                                 <Number
                                     key={i}
                                     data={field}
-                                    formVal={formVal}
-                                    setFormVal={setFormVal}
+                                    formVal={formVal[field.name]}
+                                    setFormVal={(value: string) => updateFormValue(field.name, value)}
                                     error={errors[field.name]}
                                     setError={(error: string) => setErrors(prev => ({ ...prev, [field.name]: error }))}
                                 />
@@ -76,8 +84,8 @@ const Form = ({ Schema, initialData }: TProps) => {
                                 <Checkbox
                                     key={i}
                                     data={field}
-                                    formVal={formVal}
-                                    setFormVal={setFormVal}
+                                    formVal={formVal[field.name]}
+                                    setFormVal={(value: string[]) => updateFormValue(field.name, value)}
                                     error={errors[field.name]}
                                     setError={(error: string) => setErrors(prev => ({ ...prev, [field.name]: error }))}
                                 />
@@ -87,8 +95,8 @@ const Form = ({ Schema, initialData }: TProps) => {
                                 <Radio
                                     key={i}
                                     data={field}
-                                    formVal={formVal}
-                                    setFormVal={setFormVal}
+                                    formVal={formVal[field.name]}
+                                    setFormVal={(value: string) => updateFormValue(field.name, value)}
                                     error={errors[field.name]}
                                     setError={(error: string) => setErrors(prev => ({ ...prev, [field.name]: error }))}
                                 />
@@ -98,8 +106,8 @@ const Form = ({ Schema, initialData }: TProps) => {
                                 <File
                                     key={i}
                                     data={field}
-                                    formVal={formVal}
-                                    setFormVal={setFormVal}
+                                    formVal={formVal as File | null}
+                                    setFormVal={(value: File) => updateFormValue(field.name, value)}
                                     error={errors[field.name]}
                                     setError={(error: string) => setErrors(prev => ({ ...prev, [field.name]: error }))}
                                 />

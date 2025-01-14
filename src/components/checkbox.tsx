@@ -24,11 +24,7 @@ const Checkbox = ({ data, formVal, setFormVal, error, setError }: TProps) => {
         setError("");
     };
 
-    const handleBlur = () => {
-        if (data.validation?.required && selectedValues.length === 0) {
-            setError(`${data.label} is required`);
-        }
-    };
+
     return (
         <div className="flex flex-col gap-2">
             <label className="label">
@@ -46,7 +42,6 @@ const Checkbox = ({ data, formVal, setFormVal, error, setError }: TProps) => {
                             checked={selectedValues.includes(option.value)}
                             onChange={handleChange}
                             className="mr-2   p-2 cursor-pointer"
-                            onBlur={handleBlur}
                         />
                         <label htmlFor={option.value}>{option.label}</label>
                     </div>

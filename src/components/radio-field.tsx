@@ -30,7 +30,6 @@ const Radio = ({ data, formVal, setFormVal, error, setError }: TProps) => {
                                 value={option.value}
                                 checked={formVal === option.value}
                                 onChange={handleChange}
-                                onBlur={() => handleBlur(formVal, setError, data)}
                             />
 
                             <label htmlFor={option.value} className="">

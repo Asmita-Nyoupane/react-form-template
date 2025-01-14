@@ -29,26 +29,33 @@ const Form = ({ Schema, initialData }: TProps) => {
         }));
     };
 
+    // Form Validation
+    const validateForm = () => {
+        const newErrors: Record<string, string> = {};
+        let isValid = true;
+
+        Schema.forEach(field => {
+            if (field.validation?.required && (!formVal[field.name] || (Array.isArray(formVal[field.name]) && formVal[field.name].length === 0))) {
+                newErrors[field.name] = `${field.label} is required`;
+                isValid = false
+            }
+        });
+
+        setErrors(newErrors);
+        return isValid;
+    };
+
     //   handle form submission
     const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         // Validate all fields before submission
-        const newErrors: Record<string, string> = {};
-        Schema.forEach(field => {
-            if (field.validation?.required && (!formVal[field.name] || (Array.isArray(formVal[field.name]) && formVal[field.name].length === 0))) {
-                newErrors[field.name] = `${field.label} is required`;
-            }
-        });
-        setErrors(newErrors);
-        if (Object.keys(newErrors).length > 0) {
-            return;
+        if (validateForm()) {
+            console.log("🚀 ~ handleFormSubmit ~ values:", formVal);
+            alert("✅ Form Submitted Successfully");
+            setErrors({});
+            setFormVal(initial);
         }
-
-        console.log("🚀 ~ handleFormSubmit ~ values:", formVal);
-        alert("✅ Form Submitted Successfully");
-        setErrors({});
-        setFormVal(initial)
     };
 
     return (

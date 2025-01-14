@@ -1,23 +1,30 @@
 import { useState } from "react";
 import { TProps } from "./input";
 
-const Checkbox = ({ data, formVal, setFormVal, error }: TProps) => {
+const Checkbox = ({ data, formVal, setFormVal, error, setError }: TProps) => {
 
 
-    const [selected, setSelected] = useState<string[]>(Array.isArray(formVal) ? formVal : formVal ? formVal.split(",") : []);
+    const [selected, setSelected] = useState<string[]>([]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        const isChecked = e.target.checked;
-
-        const newSelected = isChecked
+        const { checked, value } = e.target;
+        const updatedSelected = checked
             ? [...selected, value]
             : selected.filter((item) => item !== value);
 
-        setSelected(newSelected);
-        setFormVal(newSelected.join(","));
-    };
+        setSelected(updatedSelected);
+        setFormVal({
+            ...formVal,
+            [data.name]: updatedSelected.join(","),
+        });
+        setError("");
+    }
 
+    const handleBlur = () => {
+        if (data.validation?.required && selected.length === 0) {
+            setError(`${data.label} is required`);
+        }
+    }
     return (
         <div className="flex flex-col gap-2">
             <label className="label">
@@ -35,6 +42,7 @@ const Checkbox = ({ data, formVal, setFormVal, error }: TProps) => {
                             checked={selected.includes(option.value)}
                             onChange={handleChange}
                             className="mr-2   p-2 cursor-pointer"
+                            onBlur={handleBlur}
                         />
                         <label htmlFor={option.value}>{option.label}</label>
                     </div>

@@ -1,7 +1,14 @@
 import { useState } from 'react'
-import { TProps } from './input'
+import { TFields } from '../types/global-types'
 
-const Password = ({ data, formVal, setFormVal, error }: TProps) => {
+export type TProps = {
+    data: TFields,
+    formVal: string | string[],
+    setFormVal: (val: { [key: string]: string }) => void
+    className?: string,
+    error: string
+}
+const Password = ({ data, formVal, setFormVal }: TProps) => {
     const [isVisible, setVisible] = useState(false)
     const togglePasswordVisibility = () => {
         setVisible(!isVisible)
@@ -20,7 +27,7 @@ const Password = ({ data, formVal, setFormVal, error }: TProps) => {
                     placeholder={data.placeholder}
                     value={formVal}
                     className="border-none outline-none  text-[16px]  w-full"
-                    onChange={(e) => setFormVal(e.target.value)}
+                    // onChange={(e) => setFormVal(e.target.value)}
                     required={data.validation?.required}
                 />
                 <span
@@ -30,7 +37,7 @@ const Password = ({ data, formVal, setFormVal, error }: TProps) => {
                     {isVisible ? "🔓" : "🔒"}
                 </span>
             </div>
-            {error && <p className="text-sm text-start text-red-500 font-semibold">{error}</p>}
+            {/* {error && <p className="text-sm text-start text-red-500 font-semibold">{error}</p>} */}
         </div>
     )
 }

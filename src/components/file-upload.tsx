@@ -3,18 +3,27 @@ import { TFields } from "../types/global-types"
 
 type TProps = {
     data: TFields,
-    formVal: File | null,
-    setFormVal: (file: File | null) => void
-    error: string
+    formVal: Record<string, File | null>,
+    setFormVal: React.Dispatch<React.SetStateAction<Record<string, File | null>>>,
+    error?: string,
+    setError: (error: string) => void
 }
 
 
-const File = ({ data, formVal, setFormVal, error }: TProps) => {
+const File = ({ data, formVal, setFormVal, error, setError }: TProps) => {
+
     if (data.type !== 'file') return null
     const fileInputRef = useRef<HTMLInputElement>(null)
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0] || null;
-        setFormVal(file);
+        if (file && file.size > 5 * 1024 * 1024) { // Example: Max 5MB
+            setError("File size exceeds the limit of 5MB.");
+            return;
+        }
+        setError("");
+        setFormVal({
+            ...formVal, [data.name]: file
+        });
     };
 
     return (
@@ -35,8 +44,8 @@ const File = ({ data, formVal, setFormVal, error }: TProps) => {
                 </button>
 
             </>
-            {formVal && typeof formVal === "object" && "name" in formVal && (
-                <p className="text-sm mt-2 text-start text-green-500 font-semibold">Selected File: {formVal?.name}</p>
+            {formVal && formVal[data.name] && (
+                <p className="text-sm mt-2 text-start text-green-500 font-semibold">Selected File: {formVal[data.name]?.name}</p>
             )}
             {error && <p className="text-sm text-start text-red-500 font-semibold">{error}</p>}
         </div>

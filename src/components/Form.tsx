@@ -1,37 +1,45 @@
-import React from 'react';
-import Input from './input';
-import Password from './password-field';
-import TextArea from './textarea-field';
-import Radio from './radio-field';
-import Select from './select-field';
-import Date from './date-field';
-import File from './file-upload';
-
-import Checkbox from './checkbox';
-import Number from './number';
-import { TFields } from '../types/global-types';
+import React, { useState } from "react";
+import Input from "./input";
+import File from "./file-upload";
+import Checkbox from "./checkbox";
+import Number from "./number";
+import { TFields, TUserProfile } from "../types/global-types";
 type TProps = {
     Schema: TFields[];
-    formVal: Record<string, string | string[]>;
-    fileInputs: Record<string, File | null>;
-    updateFormValue: (name: string, value: string | string[]) => void;
-    updateFileInput: (name: string, file: File | null) => void;
-    onSubmit: () => void;
-    errors: Record<string, string>
-}
+    initialData: TUserProfile;
+};
 
-const Form = ({
-    Schema,
-    formVal,
-    fileInputs,
-    updateFormValue,
-    updateFileInput,
-    onSubmit,
-    errors,
-}: TProps) => {
+const Form = ({ Schema, initialData }: TProps) => {
+    const initial = Schema.reduce((acc, field) => {
+        acc[field.name] =
+            (initialData as Record<string, any>)?.[field.name] || "";
+        return acc;
+    }, {} as Record<string, string>)
+    const [formVal, setFormVal] = useState(initial);
+    const [fileInputs, setFileInputs] = useState<Record<string, File | null>>({});
+    // State for errors
+    const [errors, setErrors] = useState<Record<string, string>>({});
+
+    //   handle form submission
     const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        onSubmit();
+        const values = { ...formVal, ...fileInputs };
+        // Validate all fields before submission
+        const newErrors: Record<string, string> = {};
+        Schema.forEach(field => {
+            if (field.validation?.required && !values[field.name]) {
+                newErrors[field.name] = `${field.label} is required`;
+            }
+        });
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            return;
+        }
+
+        console.log("🚀 ~ handleFormSubmit ~ values:", values);
+        alert("✅ Form Submitted Successfully");
+        setErrors({});
+        setErrors(initial)
     };
 
     return (
@@ -39,94 +47,49 @@ const Form = ({
             <div className="py-10 grid grid-cols-1 lg:grid-cols-2 gap-10">
                 {Schema.map((field, i) => {
                     switch (field.type) {
-                        case 'text':
+                        case "text":
                             return (
                                 <Input
                                     key={i}
                                     data={field}
-                                    formVal={formVal[field.name]}
-                                    setFormVal={(value) => updateFormValue(field.name, value)}
+                                    formVal={formVal}
+                                    setFormVal={setFormVal}
                                     error={errors[field.name]}
+                                    setError={(error: string) => setErrors(prev => ({ ...prev, [field.name]: error }))}
                                 />
                             );
-                        case 'password':
-                            return (
-                                <Password
-                                    key={i}
-                                    data={field}
-                                    formVal={formVal[field.name]}
-                                    setFormVal={(value) => updateFormValue(field.name, value)}
-                                    error={errors[field.name]}
-                                />
-                            );
-                        case 'number':
+                        case "number":
                             return (
                                 <Number
                                     key={i}
                                     data={field}
-                                    formVal={formVal[field.name]}
-                                    setFormVal={(value) => updateFormValue(field.name, value)}
+                                    formVal={formVal}
+                                    setFormVal={setFormVal}
                                     error={errors[field.name]}
+                                    setError={(error: string) => setErrors(prev => ({ ...prev, [field.name]: error }))}
                                 />
                             );
-                        case 'textarea':
-                            return (
-                                <TextArea
-                                    key={i}
-                                    data={field}
-                                    formVal={formVal[field.name]}
-                                    setFormVal={(value) => updateFormValue(field.name, value)}
-                                    error={errors[field.name]}
-                                />
-                            );
-                        case 'radio':
-                            return (
-                                <Radio
-                                    key={i}
-                                    data={field}
-                                    formVal={formVal[field.name]}
-                                    setFormVal={(value) => updateFormValue(field.name, value)}
-                                    error={errors[field.name]}
-                                />
-                            );
-                        case 'date':
-                            return (
-                                <Date
-                                    key={i}
-                                    data={field}
-                                    formVal={formVal[field.name]}
-                                    setFormVal={(value) => updateFormValue(field.name, value)}
-                                    error={errors[field.name]}
-                                />
-                            );
-                        case 'select':
-                            return (
-                                <Select
-                                    key={i}
-                                    data={field}
-                                    formVal={formVal[field.name]}
-                                    setFormVal={(value) => updateFormValue(field.name, value)}
-                                    error={errors[field.name]}
-                                />
-                            );
-                        case 'checkbox':
+
+                        case "checkbox":
                             return (
                                 <Checkbox
                                     key={i}
                                     data={field}
-                                    formVal={formVal[field.name]}
-                                    setFormVal={(value) => updateFormValue(field.name, value)}
+                                    formVal={formVal}
+                                    setFormVal={setFormVal}
                                     error={errors[field.name]}
+                                    setError={(error: string) => setErrors(prev => ({ ...prev, [field.name]: error }))}
                                 />
                             );
-                        case 'file':
+                        case "file":
                             return (
                                 <File
                                     key={i}
                                     data={field}
-                                    formVal={fileInputs[field.name]}
-                                    setFormVal={(file) => updateFileInput(field.name, file)}
+                                    formVal={fileInputs}
+                                    setFormVal={setFileInputs}
                                     error={errors[field.name]}
+                                    setError={(error: string) => setErrors(prev => ({ ...prev, [field.name]: error }))}
                                 />
                             );
                         default:

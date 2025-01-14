@@ -3,6 +3,7 @@
   "email": "",
   "phone": "",
   "profilePicture": null,
-  "skills": "",
-  "age": null
+  "skills": [],
+  "age": null,
+  "gender": ""
 }

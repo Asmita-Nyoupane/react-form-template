@@ -44,6 +44,20 @@
       }
     },
     {
+      "name": "gender",
+      "type": "radio",
+      "label": "Gender",
+      "placeholder": "",
+      "options": [
+        { "value": "male", "label": "Male" },
+        { "value": "female", "label": "Female" },
+        { "value": "other", "label": "Other" }
+      ],
+      "validation": {
+        "required": true
+      }
+    },
+    {
       "name": "profilePicture",
       "type": "file",
       "label": "Profile Picture",

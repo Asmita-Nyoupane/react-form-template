@@ -4,6 +4,7 @@ import File from "./file-upload";
 import Checkbox from "./checkbox";
 import Number from "./number";
 import { TFields, TUserProfile } from "../types/global-types";
+import Radio from "./radio-field";
 type TProps = {
     Schema: TFields[];
     initialData: TUserProfile;
@@ -14,32 +15,32 @@ const Form = ({ Schema, initialData }: TProps) => {
         acc[field.name] =
             (initialData as Record<string, any>)?.[field.name] || "";
         return acc;
-    }, {} as Record<string, string>)
+    }, {} as Record<string, any>)
     const [formVal, setFormVal] = useState(initial);
-    const [fileInputs, setFileInputs] = useState<Record<string, File | null>>({});
+
     // State for errors
     const [errors, setErrors] = useState<Record<string, string>>({});
 
     //   handle form submission
     const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const values = { ...formVal, ...fileInputs };
+
         // Validate all fields before submission
         const newErrors: Record<string, string> = {};
         Schema.forEach(field => {
-            if (field.validation?.required && !values[field.name]) {
+            if (field.validation?.required && (!formVal[field.name] || (Array.isArray(formVal[field.name]) && formVal[field.name].length === 0))) {
                 newErrors[field.name] = `${field.label} is required`;
             }
         });
+        setErrors(newErrors);
         if (Object.keys(newErrors).length > 0) {
-            setErrors(newErrors);
             return;
         }
 
-        console.log("🚀 ~ handleFormSubmit ~ values:", values);
+        console.log("🚀 ~ handleFormSubmit ~ values:", formVal);
         alert("✅ Form Submitted Successfully");
         setErrors({});
-        setErrors(initial)
+        setFormVal(initial)
     };
 
     return (
@@ -81,13 +82,24 @@ const Form = ({ Schema, initialData }: TProps) => {
                                     setError={(error: string) => setErrors(prev => ({ ...prev, [field.name]: error }))}
                                 />
                             );
+                        case "radio":
+                            return (
+                                <Radio
+                                    key={i}
+                                    data={field}
+                                    formVal={formVal}
+                                    setFormVal={setFormVal}
+                                    error={errors[field.name]}
+                                    setError={(error: string) => setErrors(prev => ({ ...prev, [field.name]: error }))}
+                                />
+                            );
                         case "file":
                             return (
                                 <File
                                     key={i}
                                     data={field}
-                                    formVal={fileInputs}
-                                    setFormVal={setFileInputs}
+                                    formVal={formVal}
+                                    setFormVal={setFormVal}
                                     error={errors[field.name]}
                                     setError={(error: string) => setErrors(prev => ({ ...prev, [field.name]: error }))}
                                 />

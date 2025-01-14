@@ -35,8 +35,8 @@ const Input = ({ data, formVal, setFormVal, error, setError }: TProps) => {
 export default Input
 
 // Handle blur event for validation
-export const handleBlur = (formVal: { [key: string]: string }, setError: (error: string) => void, data: TFields) => {
-    const value = formVal[data.name] || "";
+export const handleBlur = (formVal: { [key: string]: string | string[] }, setError: (error: string) => void, data: TFields) => {
+    const value = Array.isArray(formVal[data.name]) ? formVal[data.name][0] : formVal[data.name] || "";
 
 
     if (data.validation?.required && !value) {
@@ -46,7 +46,7 @@ export const handleBlur = (formVal: { [key: string]: string }, setError: (error:
 
     // check for number
     if (data.type === "number") {
-        const numberVal = parseInt(value, 10);
+        const numberVal = parseInt(value as string, 10);
         if (data.validation?.min && numberVal < data.validation.min) {
             setError(`${data.label} must be at least ${data.validation.min}`);
             return;
@@ -73,7 +73,7 @@ export const handleBlur = (formVal: { [key: string]: string }, setError: (error:
     }
 
     // Check for pattern 
-    if (data.validation?.pattern && !new RegExp(data.validation.pattern).test(value)) {
+    if (data.validation?.pattern && !new RegExp(data.validation.pattern).test(value as string)) {
         setError(
             `${data.label} is invalid`
         );

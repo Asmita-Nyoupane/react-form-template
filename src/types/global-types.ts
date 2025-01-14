@@ -27,6 +27,7 @@ export type TUserProfile = {
     email: string;
     phone: string | null;
     profilePicture: File | null;
-    skills: string;
+    skills: string[];
+    gender: string;
     age: number | null
 };

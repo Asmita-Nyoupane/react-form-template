@@ -1,8 +1,17 @@
 
-import { TProps } from './input'
+import { handleBlur, TProps } from './input'
 
-const Radio = ({ data, formVal, setFormVal, error }: TProps) => {
+const Radio = ({ data, formVal, setFormVal, error, setError }: TProps) => {
     if (!data.options) return null
+
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFormVal({
+            ...formVal,
+            [data.name]: e.target.value,
+        });
+        setError("");
+    };
     return (
         <div className="flex flex-col gap-2">
             <div className="flex gap-2 justify-start flex-col">
@@ -22,9 +31,9 @@ const Radio = ({ data, formVal, setFormVal, error }: TProps) => {
                                 id={option.value}
                                 name={data.name}
                                 value={option.value}
-                                required={data.validation?.required}
-                                checked={formVal === option.value}
-                                onChange={(e) => setFormVal(e.target.value)}
+                                checked={formVal[data.name] === option.value}
+                                onChange={handleChange}
+                                onBlur={() => handleBlur(formVal, setError, data)}
                             />
 
                             <label htmlFor={option.value} className="">

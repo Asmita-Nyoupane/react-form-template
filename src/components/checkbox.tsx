@@ -1,30 +1,35 @@
-import { useState } from "react";
-import { TProps } from "./input";
+import { TFields } from "../types/global-types";
+
+type TProps = {
+    data: TFields,
+    formVal: { [key: string]: string[] },
+    setFormVal: (val: { [key: string]: string[] }) => void
+    className?: string,
+    error?: string,
+    setError: (error: string) => void
+}
 
 const Checkbox = ({ data, formVal, setFormVal, error, setError }: TProps) => {
 
-
-    const [selected, setSelected] = useState<string[]>([]);
+    const selectedValues: string[] = formVal[data.name] || [];
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { checked, value } = e.target;
-        const updatedSelected = checked
-            ? [...selected, value]
-            : selected.filter((item) => item !== value);
-
-        setSelected(updatedSelected);
+        const { value } = e.target;
+        const newValues = selectedValues.includes(value)
+            ? selectedValues.filter((val) => val !== value)
+            : [...selectedValues, value];
         setFormVal({
             ...formVal,
-            [data.name]: updatedSelected.join(","),
+            [data.name]: newValues,
         });
         setError("");
-    }
+    };
 
     const handleBlur = () => {
-        if (data.validation?.required && selected.length === 0) {
+        if (data.validation?.required && selectedValues.length === 0) {
             setError(`${data.label} is required`);
         }
-    }
+    };
     return (
         <div className="flex flex-col gap-2">
             <label className="label">
@@ -39,7 +44,7 @@ const Checkbox = ({ data, formVal, setFormVal, error, setError }: TProps) => {
                             type="checkbox"
                             id={option.value}
                             value={option.value}
-                            checked={selected.includes(option.value)}
+                            checked={selectedValues.includes(option.value)}
                             onChange={handleChange}
                             className="mr-2   p-2 cursor-pointer"
                             onBlur={handleBlur}

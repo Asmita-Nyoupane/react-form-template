@@ -1,6 +1,9 @@
 import { TProps } from "./input"
 
-const Date = ({ data, formVal, setFormVal, error }: TProps) => {
+
+
+const Number = ({ data, formVal, setFormVal, error }: TProps) => {
+
     return (
         <div className=' flex flex-col gap-2 flex-start'>
             <label className='label'>{data.label}  <span className="text-red-500 ml-2">{data.validation?.required && "* "}
@@ -11,4 +14,4 @@ const Date = ({ data, formVal, setFormVal, error }: TProps) => {
     )
 }
 
-export default Date
+export default Number

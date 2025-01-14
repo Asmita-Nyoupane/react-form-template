@@ -4,16 +4,17 @@ import { TProps } from "./input"
 
 
 
-const Select = ({ data, formVal, setFormVal }: TProps) => {
+
+const Select = ({ data, formVal, setFormVal, error }: TProps) => {
     if (!data.options) return null
 
 
     return (
         <div className=' flex flex-col gap-2 flex-start'>
-            <label className='label'>{data.label}  <span className="text-red-500 ml-2">{data.required && "* "}
+            <label className='label'>{data.label}  <span className="text-red-500 ml-2">{data.validation?.required && "* "}
             </span></label>
 
-            <select name={data.name} id={data.name} value={formVal} onChange={(e) => setFormVal(e.target.value)} required={data.required}
+            <select name={data.name} id={data.name} value={formVal} onChange={(e) => setFormVal(e.target.value)} required={data.validation?.required}
 
 
                 className="field">
@@ -29,6 +30,7 @@ const Select = ({ data, formVal, setFormVal }: TProps) => {
                     ))
                 }
             </select>
+            {error && <p className="text-sm text-start text-red-500 font-semibold">{error}</p>}
         </div>
     )
 }

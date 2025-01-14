@@ -6,82 +6,67 @@
       "type": "text",
       "label": "Username",
       "placeholder": "Enter your username",
-      "required": true
+      "validation": {
+        "required": true,
+        "min": 3,
+        "max": 20
+      }
     },
     {
       "name": "email",
-      "type": "email",
+      "type": "text",
       "label": "Email Address",
       "placeholder": "Enter your email",
-      "required": true
+      "validation": {
+        "required": true,
+        "pattern": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
+      }
     },
     {
       "name": "phone",
       "type": "text",
       "label": "Phone Number",
       "placeholder": "Enter your phone number",
-      "required": false
+      "validation": {
+        "pattern": "^[0-9]{10,15}$",
+        "required": false
+      }
+    },
+    {
+      "name": "age",
+      "type": "number",
+      "label": "Age",
+      "placeholder": "Enter your age",
+      "validation": {
+        "required": false,
+        "pattern": "^([1-9]+[0-9]* | [1-9])$"
+      }
     },
     {
       "name": "profilePicture",
       "type": "file",
       "label": "Profile Picture",
       "placeholder": "",
-      "required": false
+      "validation": {
+        "required": false,
+        "max": 2
+      }
     },
-    {
-      "name": "dob",
-      "type": "date",
-      "label": "Date of Birth",
-      "placeholder": "",
-      "required": false
-    },
-    {
-      "name": "password",
-      "type": "password",
-      "label": "Password",
-      "placeholder": "Enter your password",
-      "required": true
-    },
-    {
-      "name": "gender",
-      "type": "radio",
-      "label": "Gender",
-      "placeholder": "",
-      "required": false,
-      "options": [
-        { "value": "male", "label": "Male" },
-        { "value": "female", "label": "Female" },
-        { "value": "other", "label": "Other" }
-      ]
-    },
-    {
-      "name": "location",
-      "type": "text",
-      "label": "Location",
-      "placeholder": "Enter your city or address",
-      "required": false
-    },
+
     {
       "name": "skills",
-      "type": "select",
+      "type": "checkbox",
       "label": "Skills",
       "placeholder": "Select your skills",
-      "required": false,
       "options": [
         { "value": "javascript", "label": "JavaScript" },
         { "value": "react", "label": "React" },
         { "value": "node", "label": "Node.js" },
         { "value": "design", "label": "UI/UX Design" }
       ],
-      "multiple": true
-    },
-    {
-      "name": "bio",
-      "type": "textarea",
-      "label": "Bio",
-      "placeholder": "Write a short bio",
-      "required": false
+      "validation": {
+        "required": true
+      }
     }
   ]
 }

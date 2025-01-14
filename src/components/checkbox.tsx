@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { TProps } from "./input";
 
-const MultipleSelect = ({ data, formVal, setFormVal }: TProps) => {
-    const [isVisible, setVisible] = useState(false)
+const Checkbox = ({ data, formVal, setFormVal, error }: TProps) => {
+
 
     const [selected, setSelected] = useState<string[]>(Array.isArray(formVal) ? formVal : formVal ? formVal.split(",") : []);
 
@@ -12,7 +12,7 @@ const MultipleSelect = ({ data, formVal, setFormVal }: TProps) => {
 
         const newSelected = isChecked
             ? [...selected, value]
-            : selected.filter((item) => item !== value); // remove value if unchecked
+            : selected.filter((item) => item !== value);
 
         setSelected(newSelected);
         setFormVal(newSelected.join(","));
@@ -22,11 +22,10 @@ const MultipleSelect = ({ data, formVal, setFormVal }: TProps) => {
         <div className="flex flex-col gap-2">
             <label className="label">
                 {data.label}
-                <span className="text-red-500 ml-2">{data.required && "* "}</span>
+                <span className="text-red-500 ml-2">{data.validation?.required && "* "}</span>
             </label>
-            <input type="text" placeholder={data.placeholder} value={formVal} className="field" onClick={() => setVisible(true)} />
 
-            {isVisible && <div className="flex flex-col gap-1 border p-2 overflow-y-scroll h-20">
+            <div className=" grid grid-cols-2 md:grid-cols-4  gap-5">
                 {data?.options?.map((option, i) => (
                     <div key={i} className="flex items-center ">
                         <input
@@ -40,9 +39,10 @@ const MultipleSelect = ({ data, formVal, setFormVal }: TProps) => {
                         <label htmlFor={option.value}>{option.label}</label>
                     </div>
                 ))}
-            </div>}
+            </div>
+            {error && <p className="text-sm text-start text-red-500 font-semibold">{error}</p>}
         </div>
     );
 };
 
-export default MultipleSelect;
+export default Checkbox;

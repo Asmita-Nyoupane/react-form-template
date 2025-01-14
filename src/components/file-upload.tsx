@@ -1,13 +1,15 @@
 import { useRef } from "react"
-import { TFields } from "../App"
+import { TFields } from "../types/global-types"
+
 type TProps = {
     data: TFields,
     formVal: File | null,
     setFormVal: (file: File | null) => void
+    error: string
 }
 
 
-const File = ({ data, formVal, setFormVal }: TProps) => {
+const File = ({ data, formVal, setFormVal, error }: TProps) => {
     if (data.type !== 'file') return null
     const fileInputRef = useRef<HTMLInputElement>(null)
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -17,7 +19,7 @@ const File = ({ data, formVal, setFormVal }: TProps) => {
 
     return (
         <div className=' flex flex-col gap-2 flex-start'>
-            <label className='label'>{data.label}  <span className="text-red-500 ml-2">{data.required && "* "}
+            <label className='label'>{data.label}  <span className="text-red-500 ml-2">{data.validation?.required && "* "}
             </span></label>
             <>
                 <input type="file" ref={fileInputRef} className='hidden' accept={data.accept || "image/*"}
@@ -36,6 +38,7 @@ const File = ({ data, formVal, setFormVal }: TProps) => {
             {formVal && typeof formVal === "object" && "name" in formVal && (
                 <p className="text-sm mt-2 text-start text-green-500 font-semibold">Selected File: {formVal?.name}</p>
             )}
+            {error && <p className="text-sm text-start text-red-500 font-semibold">{error}</p>}
         </div>
     )
 }

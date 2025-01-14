@@ -1,13 +1,13 @@
 
 import { TProps } from './input'
 
-const Radio = ({ data, formVal, setFormVal }: TProps) => {
+const Radio = ({ data, formVal, setFormVal, error }: TProps) => {
     if (!data.options) return null
     return (
         <div className="flex flex-col gap-2">
             <div className="flex gap-2 justify-start flex-col">
                 <label className='label'>{data.label}
-                    <span className="text-red-500 ml-2">{data.required && "* "}
+                    <span className="text-red-500 ml-2">{data.validation?.required && "* "}
                     </span>
                 </label>
                 <div
@@ -22,7 +22,7 @@ const Radio = ({ data, formVal, setFormVal }: TProps) => {
                                 id={option.value}
                                 name={data.name}
                                 value={option.value}
-                                required={data.required}
+                                required={data.validation?.required}
                                 checked={formVal === option.value}
                                 onChange={(e) => setFormVal(e.target.value)}
                             />
@@ -34,6 +34,7 @@ const Radio = ({ data, formVal, setFormVal }: TProps) => {
                     ))}
                 </div>
             </div>
+            {error && <p className="text-sm text-start text-red-500 font-semibold">{error}</p>}
         </div>
     )
 }

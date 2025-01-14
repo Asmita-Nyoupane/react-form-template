@@ -1,0 +1,8 @@
+{
+  "username": "",
+  "email": "john.doe@example.com",
+  "phone": "9876543210",
+  "profilePicture": null,
+  "skills": ["javascript"],
+  "age": 11
+}

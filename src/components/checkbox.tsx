@@ -1,3 +1,4 @@
+import { validateField } from "../lib/utility";
 import { TFields } from "../types/global-types";
 
 type TProps = {
@@ -17,13 +18,17 @@ const Checkbox = ({ data, formVal, setFormVal, error, setError }: TProps) => {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = e.target;
+        const validationError = validateField(value, data);
+        setError(validationError || "");
         const newValues = selectedValues.includes(value)
             ? selectedValues.filter((val) => val !== value)
             : [...selectedValues, value];
         setFormVal(newValues);
-        setError("");
     };
-
+    const handleBlur = () => {
+        const validationError = validateField(formVal, data);
+        setError(validationError || "");
+    };
 
     return (
         <div className="flex flex-col gap-2">
@@ -42,6 +47,7 @@ const Checkbox = ({ data, formVal, setFormVal, error, setError }: TProps) => {
                             checked={selectedValues.includes(option.value)}
                             onChange={handleChange}
                             className="mr-2   p-2 cursor-pointer"
+                            onBlur={handleBlur}
                         />
                         <label htmlFor={option.value}>{option.label}</label>
                     </div>

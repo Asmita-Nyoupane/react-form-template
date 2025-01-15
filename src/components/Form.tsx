@@ -5,6 +5,7 @@ import Checkbox from "./checkbox";
 import Number from "./number";
 import { TFields, TUserProfile } from "../types/global-types";
 import Radio from "./radio-field";
+import { validateField } from "../lib/utility";
 type TProps = {
     Schema: TFields[];
     initialData: TUserProfile;
@@ -29,28 +30,23 @@ const Form = ({ Schema, initialData }: TProps) => {
         }));
     };
 
-    // Form Validation
-    const validateForm = () => {
-        const newErrors: Record<string, string> = {};
-        let isValid = true;
 
-        Schema.forEach(field => {
-            if (field.validation?.required && (!formVal[field.name] || (Array.isArray(formVal[field.name]) && formVal[field.name].length === 0))) {
-                newErrors[field.name] = `${field.label} is required`;
-                isValid = false
-            }
-        });
-
-        setErrors(newErrors);
-        return isValid;
-    };
 
     //   handle form submission
     const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        // Validate all fields before submission
-        if (validateForm()) {
+
+        let hasError = false;
+        Schema.forEach((field) => {
+            const error = validateField(formVal[field.name], field);
+            if (error) {
+                hasError = true;
+                setErrors((prev) => ({ ...prev, [field.name]: error }));
+            }
+        });
+
+        if (!hasError) {
             console.log("🚀 ~ handleFormSubmit ~ values:", formVal);
             alert("✅ Form Submitted Successfully");
             setErrors({});

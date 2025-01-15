@@ -1,13 +1,20 @@
 
-import { handleBlur, TProps } from './input'
+import { validateField } from '../lib/utility';
+import { TProps } from './input'
 
 const Radio = ({ data, formVal, setFormVal, error, setError }: TProps) => {
     if (!data.options) return null
 
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setFormVal(e.target.value);
-        setError("");
+        const value = e.target.value;
+        setFormVal(value);
+        const validationError = validateField(value, data);
+        setError(validationError || "");
+    };
+    const handleBlur = () => {
+        const validationError = validateField(formVal, data);
+        setError(validationError || "");
     };
     return (
         <div className="flex flex-col gap-2">
@@ -30,6 +37,7 @@ const Radio = ({ data, formVal, setFormVal, error, setError }: TProps) => {
                                 value={option.value}
                                 checked={formVal === option.value}
                                 onChange={handleChange}
+                                onBlur={handleBlur}
                             />
 
                             <label htmlFor={option.value} className="">
